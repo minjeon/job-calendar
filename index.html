@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>📅채용달력📅</title>
+  <title>🍀취뽀가보자고🍀</title>
   <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet" />
 
   <script type="module">
@@ -37,7 +37,7 @@
       const el = document.getElementById('connStatus');
       if (!el) return;
       el.textContent = msg;
-      el.style.color = ok ? '#16a34a' : '#dc2626';
+      el.style.color = ok ? '#6b8c6e' : '#c0392b';
     }
 
     window._saveJobToDb = async (jobData) => {
@@ -53,31 +53,31 @@
 
   <style>
     :root {
-      --bg:        #f5f4f0;
-      --surface:   #ffffff;
-      --surface2:  #f0ede8;
-      --border:    #e2ddd8;
-      --border2:   #ccc7c0;
-      --text:      #1a1714;
-      --text-dim:  #6b6560;
-      --text-muted:#a09890;
-      --radius:    14px;
-      --radius-sm: 9px;
+      --bg:         #f5f0e8;
+      --surface:    #fdfaf5;
+      --surface2:   #f0ebe0;
+      --border:     #ddd5c5;
+      --border2:    #c8bfae;
+      --text:       #2c1a0e;
+      --text-dim:   #6b4f38;
+      --text-muted: #a08870;
+      --accent:     #7a4f2e;
+      --radius:     16px;
+      --radius-sm:  10px;
+      --sidebar-w:  380px;
 
-      --ua:        #4f6ef7;
-      --ua-light:  #eef1fe;
-      --ua-mid:    #c7d0fb;
-      --ub:        #e0468a;
-      --ub-light:  #fdeef5;
-      --ub-mid:    #f9c0d8;
+      --ua:         #5c7a9e;
+      --ua-light:   #eef3f8;
+      --ub:         #9e5c7a;
+      --ub-light:   #f8eef3;
 
-      --s0-bg: #f1f5f9; --s0-text: #64748b;
-      --s1-bg: #fef9c3; --s1-text: #854d0e;
-      --s2-bg: #e0f2fe; --s2-text: #0369a1;
-      --s3-bg: #dcfce7; --s3-text: #15803d;
-      --s4-bg: #d1fae5; --s4-text: #065f46;
-      --s5-bg: #a7f3d0; --s5-text: #064e3b;
-      --s6-bg: #fde68a; --s6-text: #92400e;
+      --s0-bg: #f0ede8; --s0-text: #7a6a58;
+      --s1-bg: #fef5dc; --s1-text: #8a6a1e;
+      --s2-bg: #deeef8; --s2-text: #2e6a9e;
+      --s3-bg: #dcf0e0; --s3-text: #2e7a3e;
+      --s4-bg: #c8e8cc; --s4-text: #1e6030;
+      --s5-bg: #b0deb8; --s5-text: #145022;
+      --s6-bg: #fce8b0; --s6-text: #7a4a10;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -91,161 +91,162 @@
       flex-direction: column;
     }
 
+    /* ── 헤더 ── */
     header {
-      padding: 16px 28px;
+      padding: 14px 28px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       background: var(--surface);
       border-bottom: 1px solid var(--border);
-      box-shadow: 0 1px 4px #0000000a;
+      box-shadow: 0 1px 4px #2c1a0e0a;
     }
 
     header h1 {
       font-family: 'Gowun Dodum', serif;
-      font-size: 1.25rem;
-      letter-spacing: 0.04em;
-      color: var(--text);
+      font-size: 1.45rem;
+      color: var(--accent);
+      letter-spacing: 0.06em;
     }
 
-    #connStatus { font-size: 0.72rem; color: var(--text-muted); font-weight: 500; }
+    .header-right { display: flex; align-items: center; gap: 14px; }
 
+    #connStatus { font-size: 0.72rem; color: var(--text-muted); }
+
+    .toggle-btn {
+      display: flex; align-items: center; gap: 6px;
+      padding: 6px 14px; border-radius: 20px;
+      border: 1px solid var(--border); background: var(--surface2);
+      color: var(--text-dim); font-family: 'Noto Sans KR', sans-serif;
+      font-size: 0.78rem; cursor: pointer; transition: all 0.18s;
+    }
+    .toggle-btn:hover { background: var(--border); color: var(--text); }
+    .toggle-btn .arrow { font-size: 0.65rem; transition: transform 0.25s; display: inline-block; }
+    .toggle-btn.closed .arrow { transform: rotate(180deg); }
+
+    /* ── 레이아웃 ── */
     .app {
-      display: grid;
-      grid-template-columns: 1fr 360px;
-      flex: 1;
+      display: flex; flex: 1;
       overflow: hidden;
-      height: calc(100vh - 61px);
+      height: calc(100vh - 57px);
     }
 
+    /* ── 달력 ── */
     .calendar-pane {
-      padding: 24px 28px;
-      overflow-y: auto;
-      border-right: 1px solid var(--border);
+      flex: 1; padding: 32px 40px;
+      overflow-y: auto; transition: all 0.3s ease;
     }
 
     .cal-nav {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 20px;
+      display: flex; align-items: center; justify-content: center;
+      gap: 28px; margin-bottom: 28px;
     }
 
     .cal-nav button {
-      width: 34px; height: 34px;
-      border-radius: 50%;
-      border: 1px solid var(--border);
-      background: var(--surface);
-      color: var(--text-dim);
-      font-size: 1rem;
-      cursor: pointer;
-      transition: all 0.15s;
-      display: flex; align-items: center; justify-content: center;
-      box-shadow: 0 1px 3px #00000008;
+      width: 30px; height: 30px; border-radius: 50%;
+      border: 1px solid var(--border); background: transparent;
+      color: var(--text-dim); font-size: 0.9rem; cursor: pointer;
+      transition: all 0.15s; display: flex; align-items: center; justify-content: center;
     }
-    .cal-nav button:hover { background: var(--surface2); border-color: var(--border2); }
-    .cal-nav h2 { font-size: 1.1rem; font-weight: 700; color: var(--text); }
+    .cal-nav button:hover { background: var(--border2); color: var(--text); }
+
+    .cal-nav h2 {
+      font-family: 'Gowun Dodum', serif;
+      font-size: 1.15rem; color: var(--text);
+      letter-spacing: 0.08em; min-width: 120px; text-align: center;
+    }
 
     .cal-grid {
-      display: grid;
-      grid-template-columns: repeat(7, 1fr);
-      gap: 4px;
+      display: grid; grid-template-columns: repeat(7, 1fr);
+      gap: 1px; background: var(--border);
+      border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden;
     }
 
     .cal-dow {
-      text-align: center;
-      font-size: 0.7rem;
-      font-weight: 700;
-      color: var(--text-muted);
-      padding: 5px 0 9px;
-      letter-spacing: 0.06em;
+      text-align: center; font-size: 0.68rem; font-weight: 600;
+      color: var(--text-muted); padding: 10px 0;
+      background: var(--surface2); letter-spacing: 0.1em;
     }
-    .cal-dow:first-child { color: #ef4444; }
+    .cal-dow:first-child { color: #b05050; }
     .cal-dow:last-child  { color: var(--ua); }
 
     .cal-day {
-      min-height: 90px;
-      border-radius: var(--radius-sm);
-      border: 1.5px solid transparent;
-      padding: 7px;
-      cursor: pointer;
-      transition: all 0.13s;
-      background: var(--surface);
-      box-shadow: 0 1px 2px #00000006;
+      min-height: 96px; padding: 8px 10px; cursor: pointer;
+      transition: background 0.13s; background: var(--surface); position: relative;
     }
-    .cal-day:hover    { border-color: var(--ua); background: var(--ua-light); }
-    .cal-day.selected { border-color: var(--ua); background: var(--ua-light); box-shadow: 0 2px 8px #4f6ef718; }
+    .cal-day:hover    { background: #f0ebe0; }
+    .cal-day.selected { background: #e8e0d0; }
     .cal-day.today .day-num {
-      background: var(--ua); color: #fff; border-radius: 50%;
-      width: 22px; height: 22px;
-      display: flex; align-items: center; justify-content: center;
-      font-weight: 700;
+      background: var(--accent); color: #fff; border-radius: 50%;
+      width: 24px; height: 24px;
+      display: flex; align-items: center; justify-content: center; font-weight: 700;
     }
-    .cal-day.empty { background: transparent; border-color: transparent; cursor: default; box-shadow: none; }
-    .cal-day.sun .day-num { color: #ef4444; }
+    .cal-day.empty  { background: var(--bg); cursor: default; }
+    .cal-day.sun .day-num { color: #b05050; }
     .cal-day.sat .day-num { color: var(--ua); }
 
-    .day-num { font-size: 0.78rem; color: var(--text-dim); margin-bottom: 4px; font-weight: 500; }
+    .day-num { font-size: 0.78rem; color: var(--text-dim); margin-bottom: 5px; font-weight: 500; }
     .day-chips { display: flex; flex-direction: column; gap: 2px; }
 
     .chip {
-      font-size: 0.62rem; padding: 2px 5px; border-radius: 4px;
+      font-size: 0.6rem; padding: 2px 5px; border-radius: 3px;
       white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
       max-width: 100%; font-weight: 500;
+      background: var(--surface2); color: var(--text-dim);
+      border-left: 2px solid var(--accent);
     }
-    .chip-deadline { background: #fef9c3; color: #854d0e; border-left: 2px solid #f59e0b; }
 
+    /* ── 사이드바 ── */
     .sidebar {
-      display: flex; flex-direction: column; overflow: hidden; background: var(--surface);
+      width: var(--sidebar-w); min-width: var(--sidebar-w);
+      display: flex; flex-direction: column; overflow: hidden;
+      background: var(--surface); border-left: 1px solid var(--border);
+      transition: width 0.3s ease, min-width 0.3s ease, opacity 0.25s ease;
     }
+    .sidebar.closed { width: 0; min-width: 0; opacity: 0; pointer-events: none; }
 
     .sidebar-top {
-      padding: 18px 18px 14px;
-      border-bottom: 1px solid var(--border);
+      padding: 20px 18px 14px; border-bottom: 1px solid var(--border); flex-shrink: 0;
     }
-
-    .sidebar-date-label {
-      font-size: 1rem; font-weight: 700; color: var(--text);
-    }
+    .sidebar-date-label { font-size: 0.95rem; font-weight: 700; color: var(--text); margin-bottom: 2px; }
+    .sidebar-date-sub   { font-size: 0.72rem; color: var(--text-muted); }
 
     .job-list {
       flex: 1; overflow-y: auto; padding: 12px;
       display: flex; flex-direction: column; gap: 8px;
     }
 
+    /* 잡 카드 */
     .job-card {
-      background: var(--surface);
-      border: 1.5px solid var(--border);
-      border-radius: var(--radius-sm);
-      padding: 12px 13px;
-      cursor: pointer;
-      transition: box-shadow 0.15s, border-color 0.15s;
-      position: relative;
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: var(--radius-sm); padding: 13px 14px;
+      cursor: pointer; transition: box-shadow 0.15s, border-color 0.15s; position: relative;
     }
-    .job-card:hover { border-color: var(--border2); box-shadow: 0 3px 10px #00000010; }
+    .job-card:hover { border-color: var(--border2); box-shadow: 0 2px 8px #2c1a0e10; }
 
-    .job-card-company { font-weight: 700; font-size: 0.9rem; color: var(--text); margin-bottom: 3px; }
-    .job-card-role    { font-size: 0.76rem; color: var(--text-dim); margin-bottom: 8px; }
+    .job-card-company { font-weight: 700; font-size: 0.9rem; color: var(--text); margin-bottom: 2px; }
+    .job-card-role    { font-size: 0.75rem; color: var(--text-dim); margin-bottom: 7px; }
 
-    .job-card-meta { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 8px; }
+    .job-card-meta { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 9px; }
 
     .tag {
-      font-size: 0.63rem; padding: 2px 7px; border-radius: 20px;
+      font-size: 0.62rem; padding: 2px 7px; border-radius: 20px;
       background: var(--surface2); color: var(--text-muted); border: 1px solid var(--border);
     }
-    .tag-field  { color: #0369a1; border-color: #bae6fd; background: #f0f9ff; }
-    .tag-method { color: #7c3aed; border-color: #ddd6fe; background: #f5f3ff; }
+    .tag-field  { color: #4a7a9e; border-color: #b8d4e8; background: #eef4f8; }
+    .tag-method { color: #7a5a9e; border-color: #d4c8e8; background: #f4f0f8; }
+    .tag-url {
+      color: var(--accent); border-color: #c8a888; background: #f8f0e8;
+      text-decoration: none; cursor: pointer;
+    }
+    .tag-url:hover { background: #f0e4d0; }
 
-    /* 방망졍이/수수링이 상태 행 */
-    .status-row {
-      display: flex; gap: 6px; align-items: center; margin-top: 2px;
-    }
-    .status-row-label {
-      font-size: 0.7rem; font-weight: 700; color: var(--text-dim); min-width: 28px;
-    }
+    .status-rows { display: flex; flex-direction: column; gap: 5px; }
+    .status-row  { display: flex; align-items: center; gap: 8px; }
+    .status-row-label { font-size: 0.68rem; font-weight: 700; min-width: 26px; }
 
     .status-badge {
-      font-size: 0.67rem; font-weight: 700; padding: 2px 8px;
+      font-size: 0.65rem; font-weight: 600; padding: 2px 9px;
       border-radius: 20px; white-space: nowrap;
     }
     .s0 { background: var(--s0-bg); color: var(--s0-text); }
@@ -257,105 +258,102 @@
     .s6 { background: var(--s6-bg); color: var(--s6-text); }
 
     .job-card-delete {
-      position: absolute; top: 8px; right: 8px;
+      position: absolute; top: 9px; right: 9px;
       width: 20px; height: 20px; border-radius: 50%;
       border: none; background: transparent; color: var(--text-muted);
-      font-size: 0.8rem; cursor: pointer;
+      font-size: 0.75rem; cursor: pointer;
       display: flex; align-items: center; justify-content: center;
       transition: background 0.13s, color 0.13s; opacity: 0;
     }
     .job-card:hover .job-card-delete { opacity: 1; }
-    .job-card-delete:hover { background: #fee2e2; color: #dc2626; }
+    .job-card-delete:hover { background: #f0d8d8; color: #b03030; }
 
     .no-jobs {
       text-align: center; color: var(--text-muted); font-size: 0.82rem;
-      padding: 40px 16px; line-height: 1.8;
+      padding: 40px 16px; line-height: 1.9;
     }
 
     .add-btn {
-      margin: 10px 12px 12px; padding: 11px;
+      margin: 10px 12px 14px; padding: 12px;
       border-radius: var(--radius-sm); border: 1.5px dashed var(--border2);
       background: transparent; color: var(--text-muted);
       font-family: 'Noto Sans KR', sans-serif; font-size: 0.82rem;
-      cursor: pointer; transition: all 0.18s;
+      cursor: pointer; transition: all 0.18s; flex-shrink: 0;
     }
-    .add-btn:hover { border-color: var(--ua); color: var(--ua); background: var(--ua-light); }
+    .add-btn:hover { border-color: var(--accent); color: var(--accent); background: var(--surface2); }
 
-    /* 모달 */
+    /* ── 모달 ── */
     .modal-overlay {
       display: none; position: fixed; inset: 0;
-      background: #00000040; backdrop-filter: blur(3px);
+      background: #2c1a0e40; backdrop-filter: blur(3px);
       z-index: 100; align-items: center; justify-content: center;
     }
     .modal-overlay.open { display: flex; }
 
     .modal {
       background: var(--surface); border: 1px solid var(--border);
-      border-radius: var(--radius); padding: 26px 28px;
-      width: 460px; max-width: 95vw; max-height: 90vh; overflow-y: auto;
-      box-shadow: 0 16px 48px #00000018; animation: pop 0.18s ease;
+      border-radius: var(--radius); padding: 28px;
+      width: 480px; max-width: 95vw; max-height: 90vh; overflow-y: auto;
+      box-shadow: 0 20px 60px #2c1a0e20; animation: pop 0.18s ease;
     }
 
     @keyframes pop {
-      from { transform: scale(0.96); opacity: 0; }
-      to   { transform: scale(1);    opacity: 1; }
+      from { transform: scale(0.96) translateY(8px); opacity: 0; }
+      to   { transform: scale(1) translateY(0);      opacity: 1; }
     }
 
     .modal-header {
       margin-bottom: 20px; padding-bottom: 14px; border-bottom: 1px solid var(--border);
     }
-    .modal-header h3 { font-size: 1rem; font-weight: 700; color: var(--text); }
+    .modal-header h3 {
+      font-family: 'Gowun Dodum', serif;
+      font-size: 1.15rem; color: var(--accent);
+    }
 
     .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
     .form-group { margin-bottom: 13px; }
 
     label {
-      display: block; font-size: 0.73rem; font-weight: 600;
-      color: var(--text-dim); margin-bottom: 5px; letter-spacing: 0.04em;
+      display: block; font-size: 0.72rem; font-weight: 600;
+      color: var(--text-dim); margin-bottom: 5px; letter-spacing: 0.05em;
     }
 
     input, select, textarea {
-      width: 100%; background: var(--surface2); border: 1.5px solid var(--border);
+      width: 100%; background: var(--bg); border: 1px solid var(--border);
       border-radius: var(--radius-sm); color: var(--text);
       font-family: 'Noto Sans KR', sans-serif; font-size: 0.84rem;
-      padding: 8px 11px; outline: none; transition: border-color 0.15s, background 0.15s;
+      padding: 9px 12px; outline: none; transition: border-color 0.15s;
     }
-    input:focus, select:focus, textarea:focus { border-color: var(--ua); background: var(--surface); }
+    input:focus, select:focus, textarea:focus { border-color: var(--accent); }
     select option { background: var(--surface); }
     textarea { resize: vertical; min-height: 68px; }
 
-    /* 상태 선택 */
     .status-section {
-      border: 1.5px solid var(--border); border-radius: var(--radius-sm);
-      padding: 12px; margin-bottom: 13px; background: var(--surface2);
+      border: 1px solid var(--border); border-radius: var(--radius-sm);
+      padding: 12px 14px; margin-bottom: 13px; background: var(--bg);
     }
     .status-section-title {
-      font-size: 0.73rem; font-weight: 700; color: var(--text-dim);
-      margin-bottom: 8px; letter-spacing: 0.04em;
+      font-size: 0.72rem; font-weight: 700; color: var(--text-dim);
+      margin-bottom: 9px; display: flex; align-items: center; gap: 6px;
     }
-    .status-section-title span {
-      display: inline-block; width: 8px; height: 8px; border-radius: 50%;
-      margin-right: 5px; vertical-align: middle;
-    }
+    .status-section-title .dot { width: 7px; height: 7px; border-radius: 50%; }
 
-    .status-selector {
-      display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px;
-    }
+    .status-selector { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; }
 
     .status-opt {
-      padding: 6px 3px; border-radius: 6px; border: 1.5px solid var(--border);
+      padding: 7px 3px; border-radius: 7px; border: 1px solid var(--border);
       background: var(--surface); font-family: 'Noto Sans KR', sans-serif;
-      font-size: 0.67rem; font-weight: 600; cursor: pointer;
-      text-align: center; transition: all 0.13s; color: var(--text-dim);
+      font-size: 0.65rem; font-weight: 600; cursor: pointer;
+      text-align: center; transition: all 0.12s; color: var(--text-dim);
     }
-    .status-opt:hover { border-color: var(--border2); }
-    .status-opt.sel-0 { background: var(--s0-bg); color: var(--s0-text); border-color: #94a3b8; }
-    .status-opt.sel-1 { background: var(--s1-bg); color: var(--s1-text); border-color: #f59e0b; }
-    .status-opt.sel-2 { background: var(--s2-bg); color: var(--s2-text); border-color: #38bdf8; }
-    .status-opt.sel-3 { background: var(--s3-bg); color: var(--s3-text); border-color: #4ade80; }
-    .status-opt.sel-4 { background: var(--s4-bg); color: var(--s4-text); border-color: #34d399; }
-    .status-opt.sel-5 { background: var(--s5-bg); color: var(--s5-text); border-color: #10b981; }
-    .status-opt.sel-6 { background: var(--s6-bg); color: var(--s6-text); border-color: #f59e0b; }
+    .status-opt:hover { background: var(--surface2); }
+    .status-opt.sel-0 { background: var(--s0-bg); color: var(--s0-text); border-color: #a09880; }
+    .status-opt.sel-1 { background: var(--s1-bg); color: var(--s1-text); border-color: #c8a830; }
+    .status-opt.sel-2 { background: var(--s2-bg); color: var(--s2-text); border-color: #5090c0; }
+    .status-opt.sel-3 { background: var(--s3-bg); color: var(--s3-text); border-color: #50a060; }
+    .status-opt.sel-4 { background: var(--s4-bg); color: var(--s4-text); border-color: #3a9050; }
+    .status-opt.sel-5 { background: var(--s5-bg); color: var(--s5-text); border-color: #248040; }
+    .status-opt.sel-6 { background: var(--s6-bg); color: var(--s6-text); border-color: #c0880a; }
 
     .modal-actions {
       display: flex; justify-content: flex-end; gap: 8px;
@@ -364,7 +362,7 @@
 
     .btn-cancel {
       padding: 8px 18px; border-radius: var(--radius-sm);
-      border: 1.5px solid var(--border); background: transparent; color: var(--text-dim);
+      border: 1px solid var(--border); background: transparent; color: var(--text-dim);
       font-family: 'Noto Sans KR', sans-serif; font-size: 0.82rem; cursor: pointer;
       transition: background 0.13s;
     }
@@ -372,9 +370,9 @@
 
     .btn-save {
       padding: 8px 22px; border-radius: var(--radius-sm); border: none;
-      background: var(--ua); color: #fff;
+      background: var(--accent); color: #fff;
       font-family: 'Noto Sans KR', sans-serif; font-size: 0.82rem; font-weight: 700;
-      cursor: pointer; transition: opacity 0.13s; box-shadow: 0 2px 8px #4f6ef730;
+      cursor: pointer; transition: opacity 0.13s;
     }
     .btn-save:hover { opacity: 0.85; }
 
@@ -386,12 +384,16 @@
 <body>
 
 <header>
-  <h1>🍀취뽀가보자고🍀</h1>
-  <span id="connStatus">연결 중...</span>
+  <h1>🍀 취뽀가보자고 🍀</h1>
+  <div class="header-right">
+    <span id="connStatus">연결 중...</span>
+    <button class="toggle-btn" id="toggleBtn" onclick="toggleSidebar()">
+      목록 닫기 <span class="arrow">▶</span>
+    </button>
+  </div>
 </header>
 
 <div class="app">
-  <!-- 달력 -->
   <div class="calendar-pane">
     <div class="cal-nav">
       <button onclick="changeMonth(-1)">&#8249;</button>
@@ -401,13 +403,13 @@
     <div class="cal-grid" id="calGrid"></div>
   </div>
 
-  <!-- 사이드바 -->
-  <div class="sidebar">
+  <div class="sidebar" id="sidebar">
     <div class="sidebar-top">
       <div class="sidebar-date-label" id="selectedDateLabel">날짜를 선택하세요</div>
+      <div class="sidebar-date-sub" id="selectedDateSub">마감일 기준으로 공고가 표시돼요</div>
     </div>
     <div class="job-list" id="jobList">
-      <div class="no-jobs">날짜를 선택하면<br>채용 정보가 표시돼요 ✦</div>
+      <div class="no-jobs">달력에서 날짜를 클릭하면<br>해당 마감일의 공고가 보여요 ✦</div>
     </div>
     <button class="add-btn" id="addBtn" onclick="openModal()" style="display:none">
       ＋ 채용 정보 추가
@@ -466,10 +468,14 @@
       </div>
     </div>
 
-    <!-- 방망졍이 상태 -->
+    <div class="form-group">
+      <label>지원 사이트 URL</label>
+      <input type="url" id="fUrl" placeholder="https://www.saramin.co.kr/..." />
+    </div>
+
     <div class="status-section">
       <div class="status-section-title">
-        <span style="background:var(--ua)"></span>방망졍이 지원 상태
+        <span class="dot" style="background:var(--ua)"></span> 민정 지원 상태
       </div>
       <div class="status-selector" id="statusSelectorA">
         <button class="status-opt" data-val="0" onclick="selectStatus('A',0)">지원 전</button>
@@ -482,10 +488,9 @@
       </div>
     </div>
 
-    <!-- 수수링이 상태 -->
     <div class="status-section">
       <div class="status-section-title">
-        <span style="background:var(--ub)"></span>수수링이 지원 상태
+        <span class="dot" style="background:var(--ub)"></span> 수인 지원 상태
       </div>
       <div class="status-selector" id="statusSelectorB">
         <button class="status-opt" data-val="0" onclick="selectStatus('B',0)">지원 전</button>
@@ -499,8 +504,8 @@
     </div>
 
     <div class="form-group">
-      <label>기타 메모</label>
-      <textarea id="fNote" placeholder="채용 URL, 우대사항, 메모 등..."></textarea>
+      <label>기타 메모 (공고 PDF 링크 등)</label>
+      <textarea id="fNote" placeholder="Drive/Notion 링크, 우대사항, 메모 등..."></textarea>
     </div>
 
     <div class="modal-actions">
@@ -515,17 +520,33 @@
   const STATUS_CLASS  = ['s0','s1','s2','s3','s4','s5','s6'];
 
   let currentYear, currentMonth;
-  let selectedDate = null;
-  window.jobs      = [];
-  let editingId    = null;
+  let selectedDate    = null;
+  window.jobs         = [];
+  let editingId       = null;
   let selectedStatusA = 0;
   let selectedStatusB = 0;
+  let sidebarOpen     = true;
 
   function init() {
     const now = new Date();
     currentYear  = now.getFullYear();
     currentMonth = now.getMonth();
     renderCalendar();
+  }
+
+  function toggleSidebar() {
+    sidebarOpen = !sidebarOpen;
+    const sb  = document.getElementById('sidebar');
+    const btn = document.getElementById('toggleBtn');
+    if (sidebarOpen) {
+      sb.classList.remove('closed');
+      btn.innerHTML = '목록 닫기 <span class="arrow">▶</span>';
+      btn.classList.remove('closed');
+    } else {
+      sb.classList.add('closed');
+      btn.innerHTML = '목록 열기 <span class="arrow">▶</span>';
+      btn.classList.add('closed');
+    }
   }
 
   function changeMonth(delta) {
@@ -537,9 +558,9 @@
 
   function renderCalendar() {
     const jobs = window.jobs || [];
-    const dows = ['일','월','화','수','목','금','토'];
-    const monthNames = ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'];
-    document.getElementById('monthLabel').textContent = currentYear + '년 ' + monthNames[currentMonth];
+    const dows = ['SUN','MON','TUE','WED','THU','FRI','SAT'];
+    document.getElementById('monthLabel').textContent =
+      currentYear + '.' + String(currentMonth + 1).padStart(2, '0');
 
     const grid = document.getElementById('calGrid');
     grid.innerHTML = '';
@@ -563,8 +584,8 @@
 
     for (let d = 1; d <= totalDays; d++) {
       const dateStr = currentYear + '-' +
-        String(currentMonth+1).padStart(2,'0') + '-' +
-        String(d).padStart(2,'0');
+        String(currentMonth + 1).padStart(2, '0') + '-' +
+        String(d).padStart(2, '0');
       const el  = document.createElement('div');
       const dow = (firstDay + d - 1) % 7;
       let cls   = 'cal-day';
@@ -574,16 +595,15 @@
       if (dateStr === selectedDate) cls += ' selected';
       el.className = cls;
       el.innerHTML = '<div class="day-num">' + d + '</div><div class="day-chips" id="chips-' + dateStr + '"></div>';
-      el.onclick = (function(ds){ return function(){ selectDate(ds); }; })(dateStr);
+      el.onclick = (function(ds) { return function() { selectDate(ds); }; })(dateStr);
       grid.appendChild(el);
     }
 
-    // 마감일 기준으로 칩 표시
     jobs.forEach(function(j) {
       const el = document.getElementById('chips-' + j.date);
       if (!el) return;
       const chip = document.createElement('div');
-      chip.className = 'chip chip-deadline';
+      chip.className = 'chip';
       chip.textContent = j.company;
       el.appendChild(chip);
     });
@@ -593,8 +613,10 @@
     selectedDate = dateStr;
     const p = dateStr.split('-');
     document.getElementById('selectedDateLabel').textContent =
-      p[0] + '년 ' + parseInt(p[1]) + '월 ' + parseInt(p[2]) + '일 마감';
+      p[0] + '년 ' + parseInt(p[1]) + '월 ' + parseInt(p[2]) + '일';
+    document.getElementById('selectedDateSub').textContent = '마감일 기준 공고';
     document.getElementById('addBtn').style.display = 'block';
+    if (!sidebarOpen) toggleSidebar();
     renderJobList();
     renderCalendar();
   }
@@ -603,7 +625,7 @@
     if (!selectedDate) return;
     const jobs = window.jobs || [];
     const list = document.getElementById('jobList');
-    const dayJobs = jobs.filter(function(j){ return j.date === selectedDate; });
+    const dayJobs = jobs.filter(function(j) { return j.date === selectedDate; });
 
     if (!dayJobs.length) {
       list.innerHTML = '<div class="no-jobs">이 날 마감인 공고가 없어요.<br>아래 버튼으로 추가해 보세요 ✦</div>';
@@ -615,29 +637,36 @@
       const stA = j.statusA !== undefined ? j.statusA : 0;
       const stB = j.statusB !== undefined ? j.statusB : 0;
 
+      const urlTag = j.url
+        ? '<a class="tag tag-url" href="' + escHtml(j.url) + '" target="_blank" onclick="event.stopPropagation()">🔗 공고 링크</a>'
+        : '';
+
       const card = document.createElement('div');
       card.className = 'job-card';
       card.innerHTML =
         '<div class="job-card-company">' + escHtml(j.company) + '</div>' +
-        '<div class="job-card-role">' + escHtml(j.role || '직무 미입력') + '</div>' +
+        '<div class="job-card-role">'    + escHtml(j.role || '직무 미입력') + '</div>' +
         '<div class="job-card-meta">' +
           (j.method ? '<span class="tag tag-method">' + escHtml(j.method) + '</span>' : '') +
           (j.field  ? '<span class="tag tag-field">'  + escHtml(j.field)  + '</span>' : '') +
+          urlTag +
         '</div>' +
-        '<div class="status-row">' +
-          '<span class="status-row-label" style="color:var(--ua)">방망졍이</span>' +
-          '<span class="status-badge ' + STATUS_CLASS[stA] + '">' + STATUS_LABELS[stA] + '</span>' +
+        '<div class="status-rows">' +
+          '<div class="status-row">' +
+            '<span class="status-row-label" style="color:var(--ua)">민정</span>' +
+            '<span class="status-badge ' + STATUS_CLASS[stA] + '">' + STATUS_LABELS[stA] + '</span>' +
+          '</div>' +
+          '<div class="status-row">' +
+            '<span class="status-row-label" style="color:var(--ub)">수인</span>' +
+            '<span class="status-badge ' + STATUS_CLASS[stB] + '">' + STATUS_LABELS[stB] + '</span>' +
+          '</div>' +
         '</div>' +
-        '<div class="status-row" style="margin-top:4px">' +
-          '<span class="status-row-label" style="color:var(--ub)">수수링이</span>' +
-          '<span class="status-badge ' + STATUS_CLASS[stB] + '">' + STATUS_LABELS[stB] + '</span>' +
-        '</div>' +
-        (j.note ? '<div style="font-size:0.71rem;color:var(--text-muted);margin-top:7px;line-height:1.5">' + escHtml(j.note) + '</div>' : '') +
+        (j.note ? '<div style="font-size:0.7rem;color:var(--text-muted);margin-top:8px;line-height:1.6">' + escHtml(j.note) + '</div>' : '') +
         '<button class="job-card-delete">✕</button>';
 
-      card.querySelector('.job-card-delete').addEventListener('click', function(e){ deleteJob(j.id, e); });
-      card.addEventListener('click', function(e){
-        if (!e.target.classList.contains('job-card-delete')) openModal(j.id);
+      card.querySelector('.job-card-delete').addEventListener('click', function(e) { deleteJob(j.id, e); });
+      card.addEventListener('click', function(e) {
+        if (!e.target.classList.contains('job-card-delete') && e.target.tagName !== 'A') openModal(j.id);
       });
       list.appendChild(card);
     });
@@ -660,18 +689,19 @@
     document.getElementById('modalTitle').textContent = id ? '채용 정보 수정' : '채용 정보 등록';
 
     if (id) {
-      const j = jobs.find(function(x){ return x.id === id; });
+      const j = jobs.find(function(x) { return x.id === id; });
       if (j) {
         document.getElementById('fCompany').value = j.company || '';
         document.getElementById('fMethod').value  = j.method  || '';
         document.getElementById('fRole').value    = j.role    || '';
         document.getElementById('fField').value   = j.field   || '';
+        document.getElementById('fUrl').value     = j.url     || '';
         document.getElementById('fNote').value    = j.note    || '';
         selectStatus('A', j.statusA !== undefined ? j.statusA : 0);
         selectStatus('B', j.statusB !== undefined ? j.statusB : 0);
       }
     } else {
-      ['fCompany','fRole','fNote'].forEach(function(fid){
+      ['fCompany','fRole','fUrl','fNote'].forEach(function(fid) {
         document.getElementById(fid).value = '';
       });
       document.getElementById('fMethod').value = '';
@@ -698,6 +728,7 @@
       method:   document.getElementById('fMethod').value,
       role:     document.getElementById('fRole').value.trim(),
       field:    document.getElementById('fField').value,
+      url:      document.getElementById('fUrl').value.trim(),
       note:     document.getElementById('fNote').value.trim(),
       statusA:  selectedStatusA,
       statusB:  selectedStatusB,
@@ -709,15 +740,15 @@
       : data;
 
     window._saveJobToDb(payload)
-      .then(function(){ closeModal(); })
-      .catch(function(e){ alert('저장 오류: ' + e.message); });
+      .then(function() { closeModal(); })
+      .catch(function(e) { alert('저장 오류: ' + e.message); });
   }
 
   function deleteJob(id, e) {
     e.stopPropagation();
     if (!confirm('이 채용 정보를 삭제할까요?')) return;
     if (!window._deleteJobFromDb) return;
-    window._deleteJobFromDb(id).catch(function(e){ alert('삭제 오류: ' + e.message); });
+    window._deleteJobFromDb(id).catch(function(e) { alert('삭제 오류: ' + e.message); });
   }
 
   function escHtml(str) {
@@ -729,7 +760,7 @@
   window.renderCalendar = renderCalendar;
   window.renderJobList  = renderJobList;
 
-  document.getElementById('modalOverlay').addEventListener('click', function(e){
+  document.getElementById('modalOverlay').addEventListener('click', function(e) {
     if (e.target === this) closeModal();
   });
 
