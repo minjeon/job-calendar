@@ -31,6 +31,7 @@
       setStatus('연결됨 ✦', true);
       if (window.renderCalendar) window.renderCalendar();
       if (window.renderJobList)  window.renderJobList();
+      if (window.renderAnytimeList && anytimeOpen) window.renderAnytimeList();
     }, () => setStatus('연결 오류', false));
 
     function setStatus(msg, ok) {
@@ -381,6 +382,8 @@
     ::-webkit-scrollbar { width: 4px; }
     ::-webkit-scrollbar-track { background: transparent; }
     ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 4px; }
+    
+    .anytime-open { display: flex !important; }
   </style>
 </head>
 <body>
@@ -389,6 +392,7 @@
   <h1>🍀 취뽀가보자고 🍀</h1>
   <div class="header-right">
     <span id="connStatus">연결 중...</span>
+    <button class="toggle-btn" onclick="toggleAnytime()">📌 수시채용</button>
     <button class="toggle-btn" id="toggleBtn" onclick="toggleSidebar()">
       목록 닫기 <span class="arrow">▶</span>
     </button>
@@ -417,6 +421,14 @@
       ＋ 채용 정보 추가
     </button>
   </div>
+  <div class="sidebar" id="sidebarAnytime" style="display:none; width:var(--sidebar-w); min-width:var(--sidebar-w);">
+  <div class="sidebar-top">
+    <div class="sidebar-date-label">📌 수시채용</div>
+    <div class="sidebar-date-sub">마감일 없는 공고 모음</div>
+  </div>
+  <div class="job-list" id="jobListAnytime"></div>
+  <button class="add-btn" onclick="openModalAnytime()">＋ 수시채용 추가</button>
+</div>
 </div>
 
 <!-- 모달 -->
@@ -525,6 +537,7 @@
   let selectedDate    = null;
   window.jobs         = [];
   let editingId       = null;
+  let isAnytime = false;
   let selectedStatusA = 0;
   let selectedStatusB = 0;
   let sidebarOpen     = true;
@@ -718,6 +731,7 @@
   function closeModal() {
     document.getElementById('modalOverlay').classList.remove('open');
     editingId = null;
+    isAnytime = false;
   }
 
   function saveJob() {
@@ -734,7 +748,7 @@
       note:     document.getElementById('fNote').value.trim(),
       statusA:  selectedStatusA,
       statusB:  selectedStatusB,
-      date:     selectedDate,
+      date: isAnytime ? 'anytime' : selectedDate,
     };
 
     const payload = editingId
@@ -759,8 +773,88 @@
       .replace(/"/g,'&quot;').replace(/'/g,'&#39;');
   }
 
+  let anytimeOpen = false;
+
+function toggleAnytime() {
+  anytimeOpen = !anytimeOpen;
+  const sb = document.getElementById('sidebarAnytime');
+  if (anytimeOpen) {
+    sb.style.display = 'flex';
+    sb.style.flexDirection = 'column';
+    // 일반 사이드바 닫기
+    document.getElementById('sidebar').classList.add('closed');
+    sidebarOpen = false;
+    document.getElementById('toggleBtn').innerHTML = '목록 열기 <span class="arrow">▶</span>';
+    document.getElementById('toggleBtn').classList.add('closed');
+    renderAnytimeList();
+  } else {
+    sb.style.display = 'none';
+  }
+}
+
+function openModalAnytime() {
+  editingId = null;
+  isAnytime = true;
+  document.getElementById('modalTitle').textContent = '수시채용 등록';
+  ['fCompany','fRole','fUrl','fNote'].forEach(function(fid) {
+    document.getElementById(fid).value = '';
+  });
+  document.getElementById('fMethod').value = '';
+  document.getElementById('fField').value  = '';
+  selectStatus('A', 0);
+  selectStatus('B', 0);
+  document.getElementById('modalOverlay').classList.add('open');
+}
+
+function renderAnytimeList() {
+  const jobs = window.jobs || [];
+  const list = document.getElementById('jobListAnytime');
+  const anytimeJobs = jobs.filter(function(j) { return j.date === 'anytime'; });
+
+  if (!anytimeJobs.length) {
+    list.innerHTML = '<div class="no-jobs">수시채용 공고가 없어요.<br>아래 버튼으로 추가해 보세요 ✦</div>';
+    return;
+  }
+
+  list.innerHTML = '';
+  anytimeJobs.forEach(function(j) {
+    const stA = j.statusA !== undefined ? j.statusA : 0;
+    const stB = j.statusB !== undefined ? j.statusB : 0;
+    const urlTag = j.url
+      ? '<a class="tag tag-url" href="' + escHtml(j.url) + '" target="_blank" onclick="event.stopPropagation()">🔗 공고 링크</a>'
+      : '';
+
+    const card = document.createElement('div');
+    card.className = 'job-card';
+    card.innerHTML =
+      '<div class="job-card-company">' + escHtml(j.company) + '</div>' +
+      '<div class="job-card-role">'    + escHtml(j.role || '직무 미입력') + '</div>' +
+      '<div class="job-card-meta">' +
+        (j.method ? '<span class="tag tag-method">' + escHtml(j.method) + '</span>' : '') +
+        (j.field  ? '<span class="tag tag-field">'  + escHtml(j.field)  + '</span>' : '') +
+        urlTag +
+      '</div>' +
+      '<div class="status-rows">' +
+        '<div class="status-row"><span class="status-row-label" style="color:var(--ua)">민정</span><span class="status-badge ' + STATUS_CLASS[stA] + '">' + STATUS_LABELS[stA] + '</span></div>' +
+        '<div class="status-row"><span class="status-row-label" style="color:var(--ub)">수인</span><span class="status-badge ' + STATUS_CLASS[stB] + '">' + STATUS_LABELS[stB] + '</span></div>' +
+      '</div>' +
+      (j.note ? '<div style="font-size:0.7rem;color:var(--text-muted);margin-top:8px;line-height:1.6">' + escHtml(j.note) + '</div>' : '') +
+      '<button class="job-card-delete">✕</button>';
+
+    card.querySelector('.job-card-delete').addEventListener('click', function(e) { deleteJob(j.id, e); });
+    card.addEventListener('click', function(e) {
+      if (!e.target.classList.contains('job-card-delete') && e.target.tagName !== 'A') {
+        isAnytime = true;
+        openModal(j.id);
+      }
+    });
+    list.appendChild(card);
+  });
+}
+
   window.renderCalendar = renderCalendar;
   window.renderJobList  = renderJobList;
+  window.renderAnytimeList = renderAnytimeList;
 
   document.getElementById('modalOverlay').addEventListener('click', function(e) {
     if (e.target === this) closeModal();
