@@ -549,9 +549,13 @@
 <body>
 
 <header>
-  <h1>🍀취뽀 레츠고🍀</h1>
+  <h1>📅 채용 달력</h1>
   <div class="header-right">
     <span id="connStatus" style="font-size:0.72rem;color:var(--text-muted)">연결 중...</span>
+    <div class="user-tabs">
+      <button class="user-tab active-a" id="btnA" onclick="setUser('A')">👤 사용자 A</button>
+      <button class="user-tab" id="btnB" onclick="setUser('B')">👤 사용자 B</button>
+    </div>
   </div>
 </header>
 
@@ -570,6 +574,11 @@
   <div class="sidebar">
     <div class="sidebar-top">
       <div class="sidebar-date-label" id="selectedDateLabel">날짜를 선택하세요</div>
+      <div class="sb-filter">
+        <button class="sb-filter-btn on-all" id="fbAll" onclick="setSbFilter('all')">전체</button>
+        <button class="sb-filter-btn" id="fbA"   onclick="setSbFilter('A')">사용자 A</button>
+        <button class="sb-filter-btn" id="fbB"   onclick="setSbFilter('B')">사용자 B</button>
+      </div>
     </div>
     <div class="job-list" id="jobList">
       <div class="no-jobs">날짜를 선택하면<br>채용 정보가 표시돼요 ✦</div>
@@ -584,7 +593,7 @@
 <div class="modal-overlay" id="modalOverlay">
   <div class="modal">
     <div class="modal-header">
-      <span class="modal-user-pill pill-a" id="modalUserPill">방망졍이</span>
+      <span class="modal-user-pill pill-a" id="modalUserPill">사용자 A</span>
       <h3 id="modalTitle">채용 정보 등록</h3>
     </div>
 
@@ -633,28 +642,21 @@
     </div>
 
     <div class="form-group">
-      <label>민정 지원 상태</label>
-        <div class="status-selector" id="statusSelectorA">
-          <button class="status-opt" data-val="0" onclick="selectStatus('A',0)">지원 전</button>
-          <button class="status-opt" data-val="1" onclick="selectStatus('A',1)">지원 중</button>
-          <button class="status-opt" data-val="2" onclick="selectStatus('A',2)">지원 완료</button>
-          <button class="status-opt" data-val="3" onclick="selectStatus('A',3)">서류 합격</button>
-          <button class="status-opt" data-val="4" onclick="selectStatus('A',4)">1차 합격</button>
-          <button class="status-opt" data-val="5" onclick="selectStatus('A',5)">2차 합격</button>
-          <button class="status-opt" data-val="6" onclick="selectStatus('A',6)">최종 합격 🎉</button>
-        </div>
+      <label>지원 상태</label>
+      <div class="status-selector" id="statusSelector">
+        <button class="status-opt" data-val="0" onclick="selectStatus(0)">지원 전</button>
+        <button class="status-opt" data-val="1" onclick="selectStatus(1)">지원 중</button>
+        <button class="status-opt" data-val="2" onclick="selectStatus(2)">지원 완료</button>
+        <button class="status-opt" data-val="3" onclick="selectStatus(3)">서류 합격</button>
+        <button class="status-opt" data-val="4" onclick="selectStatus(4)">1차 합격</button>
+        <button class="status-opt" data-val="5" onclick="selectStatus(5)">2차 합격</button>
+        <button class="status-opt" data-val="6" onclick="selectStatus(6)">최종 합격 🎉</button>
+      </div>
     </div>
+
     <div class="form-group">
-      <label>수인 지원 상태</label>
-        <div class="status-selector" id="statusSelectorB">
-          <button class="status-opt" data-val="0" onclick="selectStatus('B',0)">지원 전</button>
-          <button class="status-opt" data-val="1" onclick="selectStatus('B',1)">지원 중</button>
-          <button class="status-opt" data-val="2" onclick="selectStatus('B',2)">지원 완료</button>
-          <button class="status-opt" data-val="3" onclick="selectStatus('B',3)">서류 합격</button>
-          <button class="status-opt" data-val="4" onclick="selectStatus('B',4)">1차 합격</button>
-          <button class="status-opt" data-val="5" onclick="selectStatus('B',5)">2차 합격</button>
-          <button class="status-opt" data-val="6" onclick="selectStatus('B',6)">최종 합격 🎉</button>
-        </div>
+      <label>마감일</label>
+      <input type="date" id="fDeadline" />
     </div>
 
     <div class="form-group">
@@ -680,8 +682,8 @@
   let selectedDate = null;
   let sbFilter     = 'all';  // 'all' | 'A' | 'B'
   window.jobs      = [];
-  let selectedStatusA = 0;
-  let selectedStatusB = 0;
+  let editingId    = null;
+  let selectedStatus = 0;
 
   function init() {
     const now = new Date();
@@ -794,16 +796,16 @@
 
     list.innerHTML = '';
     dayJobs.forEach(function(j) {
-      const stA = j.statusA !== undefined ? j.statusA : 0;
-      const stB = j.statusB !== undefined ? j.statusB : 0;
+      const st  = j.status !== undefined ? j.status : 0;
+      const stCls = STATUS_CLASS[st] || 's0';
+      const stLbl = STATUS_LABELS[st] || '지원 전';
 
       const card = document.createElement('div');
       card.className = 'job-card user-' + j.user.toLowerCase();
       card.innerHTML =
         '<div class="job-card-top">' +
           '<div class="job-card-company">' + escHtml(j.company) + '</div>' +
-          '<span class="status-badge ' + STATUS_CLASS[stA] + '" style="margin-right:3px">민정 ' + STATUS_LABELS[stA] + '</span>' +
-          '<span class="status-badge ' + STATUS_CLASS[stB] + '">수인 ' + STATUS_LABELS[stB] + '</span>' +
+          '<span class="status-badge ' + stCls + '">' + stLbl + '</span>' +
         '</div>' +
         '<div class="job-card-role">' + escHtml(j.role || '직무 미입력') + '</div>' +
         '<div class="job-card-meta">' +
@@ -811,7 +813,7 @@
           (j.field    ? '<span class="tag tag-field">'  + escHtml(j.field)  + '</span>' : '') +
           (j.deadline ? '<span class="tag">마감 ' + j.deadline + '</span>' : '') +
           '<span class="tag" style="' + (j.user==='A' ? 'color:var(--ua);border-color:var(--ua-mid)' : 'color:var(--ub);border-color:var(--ub-mid)') + '">' +
-            (j.user === 'A' ? '방망졍이' : '수수링이') +
+            (j.user === 'A' ? '사용자 A' : '사용자 B') +
           '</span>' +
         '</div>' +
         (j.note ? '<div style="font-size:0.71rem;color:var(--text-muted);margin-top:6px;line-height:1.5">' + escHtml(j.note) + '</div>' : '') +
@@ -826,15 +828,13 @@
   }
 
   // ── 상태 선택 ──
-  function selectStatus(user, val) {
-  if (user === 'A') selectedStatusA = val;
-  else selectedStatusB = val;
-  const sid = user === 'A' ? 'statusSelectorA' : 'statusSelectorB';
-  document.querySelectorAll('#' + sid + ' .status-opt').forEach(function(btn) {
-    const v = parseInt(btn.getAttribute('data-val'));
-    btn.className = 'status-opt' + (v === val ? ' sel-' + val : '');
-  });
-}
+  function selectStatus(val) {
+    selectedStatus = val;
+    document.querySelectorAll('.status-opt').forEach(function(btn) {
+      const v = parseInt(btn.getAttribute('data-val'));
+      btn.className = 'status-opt' + (v === val ? ' sel-' + val : '');
+    });
+  }
 
   // ── 모달 ──
   function openModal(id) {
@@ -856,8 +856,7 @@
         document.getElementById('fField').value    = j.field    || '';
         document.getElementById('fDeadline').value = j.deadline || '';
         document.getElementById('fNote').value     = j.note     || '';
-        selectStatus('A', j.statusA !== undefined ? j.statusA : 0);
-        selectStatus('B', j.statusB !== undefined ? j.statusB : 0);
+        selectStatus(j.status !== undefined ? j.status : 0);
       }
     } else {
       ['fCompany','fRole','fNote','fDeadline'].forEach(function(fid){
@@ -865,8 +864,7 @@
       });
       document.getElementById('fMethod').value = '';
       document.getElementById('fField').value  = '';
-      selectStatus('A', 0);
-      selectStatus('B', 0);
+      selectStatus(0);
     }
 
     document.getElementById('modalOverlay').classList.add('open');
@@ -887,9 +885,9 @@
       method:   document.getElementById('fMethod').value,
       role:     document.getElementById('fRole').value.trim(),
       field:    document.getElementById('fField').value,
+      deadline: document.getElementById('fDeadline').value,
       note:     document.getElementById('fNote').value.trim(),
-      statusA: selectedStatusA,
-      statusB: selectedStatusB,
+      status:   selectedStatus,
       date:     selectedDate,
       user:     currentUser,
     };
