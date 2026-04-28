@@ -158,7 +158,6 @@
 
     .cal-grid {
   display: grid; grid-template-columns: repeat(7, 1fr);
-  grid-template-rows: auto repeat(6, 1fr);
   gap: 1px; background: var(--border);
   border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden;
   flex: 1;
@@ -173,7 +172,7 @@
     .cal-dow:last-child  { color: var(--ua); }
 
    .cal-day {
-  padding: 8px 10px; cursor: pointer;
+  min-height: 130px; padding: 8px 10px; cursor: pointer;
   transition: background 0.13s; background: var(--surface); position: relative;
 }
     .cal-day:hover    { background: #f0ebe0; }
