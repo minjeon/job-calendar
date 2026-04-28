@@ -781,11 +781,6 @@ function toggleAnytime() {
   if (anytimeOpen) {
     sb.style.display = 'flex';
     sb.style.flexDirection = 'column';
-    // 일반 사이드바 닫기
-    document.getElementById('sidebar').classList.add('closed');
-    sidebarOpen = false;
-    document.getElementById('toggleBtn').innerHTML = '목록 열기 <span class="arrow">▶</span>';
-    document.getElementById('toggleBtn').classList.add('closed');
     renderAnytimeList();
   } else {
     sb.style.display = 'none';
