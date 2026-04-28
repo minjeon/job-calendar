@@ -777,13 +777,21 @@
 
 function toggleAnytime() {
   anytimeOpen = !anytimeOpen;
-  const sb = document.getElementById('sidebarAnytime');
+  const sbNormal   = document.getElementById('sidebar');
+  const sbAnytime  = document.getElementById('sidebarAnytime');
+
   if (anytimeOpen) {
-    sb.style.display = 'flex';
-    sb.style.flexDirection = 'column';
+    sbNormal.classList.add('closed');
+    sbAnytime.style.display = 'flex';
+    sbAnytime.style.flexDirection = 'column';
     renderAnytimeList();
   } else {
-    sb.style.display = 'none';
+    sbAnytime.style.display = 'none';
+    // 원래 사이드바 복구 (목록 열기 상태였으면 다시 열기)
+    sbNormal.classList.remove('closed');
+    sidebarOpen = true;
+    document.getElementById('toggleBtn').innerHTML = '목록 닫기 <span class="arrow">▶</span>';
+    document.getElementById('toggleBtn').classList.remove('closed');
   }
 }
 
