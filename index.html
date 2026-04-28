@@ -201,7 +201,7 @@
 
     /* ── 사이드바 ── */
     .sidebar {
-      width: var(--sidebar-w); min-width: var(--sidebar-w);
+      height: 100%; width: var(--sidebar-w); min-width: var(--sidebar-w);
       display: flex; flex-direction: column; overflow: hidden;
       background: var(--surface); border-left: 1px solid var(--border);
       transition: width 0.3s ease, min-width 0.3s ease, opacity 0.25s ease;
@@ -421,7 +421,7 @@
       ＋ 채용 정보 추가
     </button>
   </div>
-  <div class="sidebar" id="sidebarAnytime" style="display:none; width:var(--sidebar-w); min-width:var(--sidebar-w);">
+  <div class="sidebar" id="sidebarAnytime" style="display:none; width:var(--sidebar-w); min-width:var(--sidebar-w); height:100%; overflow:hidden;">
   <div class="sidebar-top">
     <div class="sidebar-date-label">📌 수시채용</div>
     <div class="sidebar-date-sub">마감일 없는 공고 모음</div>
