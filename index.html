@@ -259,6 +259,7 @@
     .s4 { background: var(--s4-bg); color: var(--s4-text); }
     .s5 { background: var(--s5-bg); color: var(--s5-text); }
     .s6 { background: var(--s6-bg); color: var(--s6-text); }
+    .s7 { background: #f5e6e6; color: #a03030; }
 
     .job-card-delete {
       position: absolute; top: 9px; right: 9px;
@@ -499,6 +500,7 @@
         <button class="status-opt" data-val="4" onclick="selectStatus('A',4)">1차 합격</button>
         <button class="status-opt" data-val="5" onclick="selectStatus('A',5)">2차 합격</button>
         <button class="status-opt" data-val="6" onclick="selectStatus('A',6)">최종 합격 🎉</button>
+        <button class="status-opt" data-val="7" onclick="selectStatus('A',7)">미제출</button>
       </div>
     </div>
 
@@ -514,6 +516,7 @@
         <button class="status-opt" data-val="4" onclick="selectStatus('B',4)">1차 합격</button>
         <button class="status-opt" data-val="5" onclick="selectStatus('B',5)">2차 합격</button>
         <button class="status-opt" data-val="6" onclick="selectStatus('B',6)">최종 합격 🎉</button>
+        <button class="status-opt" data-val="7" onclick="selectStatus('B',7)">미제출</button>
       </div>
     </div>
 
@@ -535,8 +538,8 @@
 </div>
 
 <script>
-  const STATUS_LABELS = ['지원 전','지원 중','지원 완료','서류 합격','1차 합격','2차 합격','최종 합격 🎉'];
-  const STATUS_CLASS  = ['s0','s1','s2','s3','s4','s5','s6'];
+  const STATUS_LABELS = ['지원 전','지원 중','지원 완료','서류 합격','1차 합격','2차 합격','최종 합격 🎉', '미제출'];
+  const STATUS_CLASS  = ['s0','s1','s2','s3','s4','s5','s6','s7'];
 
   let currentYear, currentMonth;
   let selectedDate    = null;
